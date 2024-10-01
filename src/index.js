@@ -1,5 +1,3 @@
-const { get } = require("express/lib/response");
-const { registerNode } = require("three/webgpu");
 const registrationForm = document.getElementById('registration');
 const loginForm = document.getElementById('login');
 const errorDisplay = document.getElementById("errorDisplay");
@@ -15,7 +13,7 @@ function clearError() {
 }
 
 function isValidEmail(email) {
-    const re= /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
 
@@ -27,7 +25,7 @@ registrationForm.addEventListener("submit", (event) => {
 });
 
 // Registration Form Validation
-registrationForm.addEventListener('submit', function(e) {
+registrationForm.addEventListener('submit', function (e) {
     e.preventDefault();
     clearError();
 
@@ -55,10 +53,10 @@ registrationForm.addEventListener('submit', function(e) {
     }
 
     //Email validation
-    if (!isValidEmail(email)){ 
+    if (!isValidEmail(email)) {
         return showError("Please enter a valid email address")
     }
-    if (email.toLowerCase().endsWith("@example.com")){
+    if (email.toLowerCase().endsWith("@example.com")) {
         return showError("Cannot end with @example.com")
     }
 
@@ -100,9 +98,10 @@ registrationForm.addEventListener('submit', function(e) {
     // Clear form and show success message
     this.reset();
     showError('Registration successful!'); // Using error display for success message
+});
 
-    // Login Form Validation
-loginForm.addEventListener('submit', function(e) {
+// Login Form Validation
+loginForm.addEventListener('submit', function (e) {
     e.preventDefault();
     clearError();
 
@@ -118,7 +117,7 @@ loginForm.addEventListener('submit', function(e) {
     // Check if user exists and password is correct
     const users = JSON.parse(localStorage.getItem('users')) || [];
     const user = users.find(u => u.username.toLowerCase() === username.toLowerCase());
-    
+
     if (!user) {
         return showError('Username does not exist.');
     }
@@ -134,5 +133,4 @@ loginForm.addEventListener('submit', function(e) {
     } else {
         showError(`Login successful! Welcome, ${username}.`);
     }
-});
 });
