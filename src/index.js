@@ -56,7 +56,35 @@ registrationForm.addEventListener("submit", (event) {
         return showError("Cannot end with @example.com")
     }
 
-    
+    // Password validation
+    if (password.length < 12) {
+        return showError('Password must be at least 12 characters long.');
+    }
+    if (!/[A-Z]/.test(password) || !/[a-z]/.test(password)) {
+        return showError('Password must have at least one uppercase and one lowercase letter.');
+    }
+    if (!/\d/.test(password)) {
+        return showError('Password must contain at least one number.');
+    }
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        return showError('Password must contain at least one special character.');
+    }
+    if (/password/i.test(password)) {
+        return showError('Password cannot contain the word "password".');
+    }
+    if (password.toLowerCase().includes(username.toLowerCase())) {
+        return showError('Password cannot contain the username.');
+    }
+
+    // Confirm password
+    if (password !== passwordCheck) {
+        return showError('Passwords do not match.');
+    }
+
+    // Terms and conditions
+    if (!terms) {
+        return showError('You must accept the terms and conditions.');
+    }
 
     // If all validations pass, store the user data
     const users = JSON.parse(localStorage.getItem('users')) || [];
