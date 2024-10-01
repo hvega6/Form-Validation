@@ -9,6 +9,15 @@ const confirmPasswordInput = document.getElementById("passwordCheck");
 const termsCheckbox = document.getElementById("terms");
 const successMessage = document.getElementById("successMessage")
 
+function showError(message) {
+    errorDisplay.textContent = message;
+    errorDisplay.style.display = 'block'
+}
+
+function isValidEmail(email) {
+    const re= /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
 
 registrationForm.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -40,6 +49,13 @@ registrationForm.addEventListener("submit", (event) {
     }
 
     //Email validation
+    if (!isValidEmail(email)){ 
+        return showError("Please enter a valid email address")
+    }
+    if (email.toLowerCase().endsWith("@example.com")){
+        return showError("Cannot end with @example.com")
+    }
+
     
 
     // If all validations pass, store the user data
