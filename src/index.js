@@ -1,17 +1,17 @@
 const { get } = require("express/lib/response");
 const { registerNode } = require("three/webgpu");
-
+const registrationForm = document.getElementById('registration');
+const loginForm = document.getElementById('login');
 const errorDisplay = document.getElementById("errorDisplay");
-const usernameInput = document.getElementById("username");
-const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
-const confirmPasswordInput = document.getElementById("passwordCheck");
-const termsCheckbox = document.getElementById("terms");
-const successMessage = document.getElementById("successMessage")
 
 function showError(message) {
     errorDisplay.textContent = message;
     errorDisplay.style.display = 'block'
+}
+
+function clearError() {
+    errorDisplay.textContent = '';
+    errorDisplay.style.display = 'none';
 }
 
 function isValidEmail(email) {
@@ -26,10 +26,16 @@ registrationForm.addEventListener("submit", (event) => {
     }
 });
 
-registrationForm.addEventListener("submit", (event) {
-    let isValid = true;
+// Registration Form Validation
+registrationForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    clearError();
 
-    const username = usernameInput.value.trim()
+    const username = this.username.value.trim();
+    const email = this.email.value.trim();
+    const password = this.password.value;
+    const passwordCheck = this.passwordCheck.value;
+    const terms = this.terms.checked;
 
     //user registration validation
     if (username === '') {
@@ -94,4 +100,39 @@ registrationForm.addEventListener("submit", (event) {
     // Clear form and show success message
     this.reset();
     showError('Registration successful!'); // Using error display for success message
+
+    // Login Form Validation
+loginForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    clearError();
+
+    const username = this.username.value.trim();
+    const password = this.password.value;
+    const persist = this.persist.checked;
+
+    // Username validation
+    if (username === '') {
+        return showError('Username cannot be blank.');
+    }
+
+    // Check if user exists and password is correct
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const user = users.find(u => u.username.toLowerCase() === username.toLowerCase());
+    
+    if (!user) {
+        return showError('Username does not exist.');
+    }
+
+    if (user.password !== password) {
+        return showError('Incorrect password.');
+    }
+
+    // If login is successful
+    this.reset();
+    if (persist) {
+        showError(`Login successful! Welcome, ${username}. You will be kept logged in.`);
+    } else {
+        showError(`Login successful! Welcome, ${username}.`);
+    }
+});
 });
