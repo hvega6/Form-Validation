@@ -24,6 +24,11 @@ registrationForm.addEventListener("submit", (event) => {
     }
 });
 
+function isUsernameTaken(username) {
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    return users.some(user => user.username.toLowerCase() === username.toLowerCase());
+}
+
 // Registration Form Validation
 registrationForm.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -134,3 +139,4 @@ loginForm.addEventListener('submit', function (e) {
         showError(`Login successful! Welcome, ${username}.`);
     }
 });
+d
